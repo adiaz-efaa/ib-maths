@@ -1,2 +1,2 @@
-# ib-maths
+# IB Maths
 Notas para matemáticas IB nivel medio.
