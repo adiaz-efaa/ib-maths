@@ -25,7 +25,7 @@ html:
 
 repository:
   url: https://github.com/adiaz-efaa/ib-maths
-  branch: master
+  branch: main
   path_to_book: book
 
 launch_buttons:
