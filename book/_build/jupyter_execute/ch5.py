@@ -253,6 +253,7 @@ Veremos reglas (fórmulas) para encontrar la derivada de una función compuesta 
 La función $y=\left(3-x\right)^3$ puede ser escrita como la composición de dos funciones $g$ y $f$ tales que $y=f\left(g\left(x\right)\right)$ o $\left(f \circ g\right)\left(x\right)$ donde $g\left(x\right)=3-x$ y $f\left(x\right)=x^3$.
 
 ```{admonition} Intuición
+:class: tip
 Expandir $y=\left(1+x\right)^2$ y encontrar $\frac{dy}{dx}$.
 
 $$y=x^2+2x+1\Rightarrow \frac{dy}{dx}=2\left(x+1\right)$$
@@ -282,10 +283,132 @@ $$=2\left(1+x\right)$$
 Vemos como este último resultado coincide con el cálculo inicial.
 ```
 
-**Regla de la Cadena:** Si $y=f\left(u\right)$ y $u=g\left(x\right)$ entonces:
+```{admonition} Regla de la Cadena:
+Si $y=f\left(u\right)$ y $u=g\left(x\right)$ entonces:
 
 $$\frac{dy}{dx}=\frac{dy}{du}\times \frac{du}{dx}$$
 
 Alternativamente, se puede escribir:
 
 $$\left(f\circ g\right)'\left(x\right)=f'\left(g\left(x\right)\right)\cdot g'\left(x\right)$$
+```
+
+Una forma intuitiva de pensar y recordar la regla de la cadena es la siguiente. Sea $u=g\left(x\right)$ e $y=f\left(u\right)$, queremos encontrar $\frac{dy}{dx}$.
+
+Recordemos la definición de derivada:
+
+$$\lim_{h\to 0}\frac{f\left(x+h\right)-f\left(x\right)}{h}=f'\left(x\right)$$
+
+Si $y=f\left(x\right)$, podemos expresar esta definición de la siguiente manera:
+
+$$\delta y \approx f'\left(x\right)\delta x$$
+
+para $\delta x$ suficientemente pequeño. En palabras, podemos aproximar la variación de $y$ para una variación pequeña de $x$ multiplicando la derivada de $f$ en $x$ por la variación en $x$.
+
+Volviendo a la regla de la cadena:
+
+$$\delta u \approx g'\left(x\right)\delta x$$
+
+$$\delta y \approx f'\left(u\right)\delta u$$
+
+Por lo tanto,
+
+$$\delta y \approx f'\left(u\right)g'\left(x\right)\delta x$$
+
+$$\delta y \approx f'\left(g\left(x\right)\right)g'\left(x\right)\delta x$$
+
+$$\frac{\delta y}{\delta x} \approx f'\left(g\left(x\right)\right)g'\left(x\right)$$
+
+O sea (y este paso no es del todo riguroso porque no estamos calculando el límite para $\delta x \to 0$.
+
+$$\frac{dy}{dx}=f'\left(g\left(x\right)\right)g'\left(x\right)$$
+
+**Ejemplo**
+
+Sea,
+
+$$y=\left(x^2-4x\right)^3$$
+
+Aquí hay dos funciones encadenadas:
+
+$$u=x^2-4x$$
+
+$$y=u^3$$
+
+Tenemos que:
+
+$$\frac{du}{dx}=2x-4$$
+
+$$\frac{dy}{du}=3u^2$$
+
+Y por lo tanto:
+
+$$\frac{dy}{dx}=\frac{dy}{du}\frac{du}{dx}=3u\left(2x-4\right)=3\left(x^2-4x\right)^2\left(2x-4\right)$$
+
+### Regla del Producto
+
+Recordemos, si $y=f\left(x\right)$, podemos escribir $\delta y \approx f'\left(x\right)\delta x$. Además, recordando que $\delta y = f\left(x+\delta x\right)-f\left(x\right)$ tenemos esta segunda expresión:
+
+$$f\left(x+\delta x\right) \approx f\left(x\right) + f'\left(x\right)\delta x$$
+
+Con esta fórmula, veamos como podemos calcular la derivada del producto de dos funciones $y=f\left(x\right)g\left(x\right)$. Comencemos evaluando $\delta y=f\left(x+\delta x\right)g\left(x+\delta x\right)-f\left(x\right)g\left(x\right)$.
+
+$$\delta y=f\left(x+\delta x\right)g\left(x+\delta x\right)-f\left(x\right)g\left(x\right)$$
+
+$$=\left(f\left(x\right) + f'\left(x\right)\delta x\right)\left(g\left(x\right) + g'\left(x\right)\delta x\right)-f\left(x\right)g\left(x\right)$$
+
+$$=f'\left(x\right)g\left(x\right)\delta x + g'\left(x\right)f\left(x\right)\delta x + f'\left(x\right)g'\left(x\right)\delta x^2
+$$
+
+De esto sigue que:
+
+$$\frac{\delta y}{\delta x}=f'\left(x\right)g\left(x\right) + g'\left(x\right)f\left(x\right)+ f'\left(x\right)g'\left(x\right)\delta x
+$$
+
+Y por lo tanto, haciendo que $\delta x \to 0$ obtenemos que:
+
+$$\frac{dy}{dx}=f'\left(x\right)g\left(x\right) + g'\left(x\right)f\left(x\right)$$
+
+```{admonition} Regla del Producto
+$$\frac{d\left(f\left(x\right)g\left(x\right)\right)}{dx}=f'\left(x\right)g\left(x\right) + g'\left(x\right)f\left(x\right)$$
+```
+
+```{admonition} Ejemplo
+
+$$f\left(x\right)=\left(x^3+3x^2+6\right)\left(2x-1\right)$$
+
+$$f\left(x\right)=u\left(x\right)v\left(x\right)$$
+
+$$u\left(x\right)=x^3+3x^2+6$$
+
+$$v\left(x\right)=2x-1$$
+
+$$u'\left(x\right)=3x^2+6x$$
+
+$$v'\left(x\right)=2$$
+
+$$\frac{df\left(x\right)}{dx}=u'\left(x\right)v\left(x\right)+v'\left(x\right)u\left(x\right)=$$
+
+$$=\left(3x^2+6x\right)\left(2x-1\right)+2\left(x^3+3x^2+6\right)$$
+
+$$=8x^3+15x^2-6x+12$$
+```
+
+### Regla del Cociente
+
+- Consideremos la función $Q\left(x\right)=\frac{u\left(x\right)}{v\left(x\right)}$
+- Calculemos $Q'\left(x\right)$ usando la regla del producto:
+
+$$Q\left(x\right)v\left(x\right)=u\left(x\right)$$
+
+$$Q'\left(x\right)v\left(x\right)+v'\left(x\right)Q\left(x\right)=u'\left(x\right)$$
+
+$$Q'\left(x\right)=\frac{u'\left(x\right)-v'\left(x\right)Q\left(x\right)}{v\left(x\right)}$$
+
+$$Q'\left(x\right)=\frac{u'\left(x\right)v\left(x\right)-v'\left(x\right)u\left(x\right)}{v\left(x\right)^2}$$
+
+```{admonition} Regla del Cociente
+Si $f\left(x\right)=\frac{u\left(x\right)}{v\left(x\right)}$, $v\left(x\right)\neq 0$ entonces:
+
+$$f'\left(x\right)=\frac{u'\left(x\right)v\left(x\right)-v'\left(x\right)u\left(x\right)}{v\left(x\right)^2}$$
+``
