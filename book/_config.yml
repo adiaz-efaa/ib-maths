@@ -4,19 +4,19 @@ title: ""
 logo: images/logo_ib_maths.png
 author: Efaa
 email: alvaro@efaa.cl
-description: >- # this means to ignore newlines until "baseurl:"
-  This is an example book built with Jupyter Books.
-exclude_patterns: [file-types/include-rst.rst]
+# description: >- # this means to ignore newlines until "baseurl:"
+#   This is an example book built with Jupyter Books.
+# exclude_patterns: [file-types/include-rst.rst]
 
 bibtex_bibfiles:
-  - references.bib
+  # - references.bib
 
 execute:
-  execute_notebooks: cache
+  execute_notebooks: force
 
 html:
-  favicon: 
-  google_analytics_id: 
+  #favicon: #
+  #google_analytics_id: #
   home_page_in_navbar: false
   use_edit_page_button: true
   use_repository_button: true
@@ -56,6 +56,8 @@ latex:
 
 sphinx:
   config:
+    html_js_files:
+      - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
     nb_custom_formats:
       .Rmd:
         - jupytext.reads
