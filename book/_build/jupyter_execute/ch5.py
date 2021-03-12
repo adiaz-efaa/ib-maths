@@ -13,6 +13,22 @@ import math
 import pandas as pd
 import plotly.express as px
 
+$\newcommand{\fx}{f\left(x\right)}$
+$\newcommand{\gx}{g\left(x\right)}$
+$\newcommand{\hx}{h\left(x\right)}$
+$\newcommand{\ux}{u\left(x\right)}$
+$\newcommand{\vx}{v\left(x\right)}$
+$\newcommand{\dfx}{f'\left(x\right)}$
+$\newcommand{\dgx}{g'\left(x\right)}$
+$\newcommand{\dhx}{h'\left(x\right)}$
+$\newcommand{\dux}{u'\left(x\right)}$
+$\newcommand{\dvx}{v'\left(x\right)}$
+$\newcommand{\ddfx}{f''\left(x\right)}$
+$\newcommand{\ddgx}{g''\left(x\right)}$
+$\newcommand{\ddhx}{h''\left(x\right)}$
+$\newcommand{\ddux}{u''\left(x\right)}$
+$\newcommand{\ddvx}{v''\left(x\right)}$
+
 ## Límites y Convergencia
 
 Un límite describe el resultado de una función a medida que el input (variable independiente) se acerca a un cierto valor.
@@ -411,4 +427,92 @@ $$Q'\left(x\right)=\frac{u'\left(x\right)v\left(x\right)-v'\left(x\right)u\left(
 Si $f\left(x\right)=\frac{u\left(x\right)}{v\left(x\right)}$, $v\left(x\right)\neq 0$ entonces:
 
 $$f'\left(x\right)=\frac{u'\left(x\right)v\left(x\right)-v'\left(x\right)u\left(x\right)}{v\left(x\right)^2}$$
-``
+```
+
+```{adminition} Ejemplo
+$$y=\frac{x^2-3}{3x-x^2}$$
+
+$$u\left(x\right)=x^2-3 \Rightarrow u'\left(x\right)=2x$$
+
+$$v\left(x\right)=3x-x^2 \Rightarrow v'\left(x\right)=3-2x$$
+
+Aplicando la regla del cociente a $y=\frac{u\left(x\right)}{v\left(x\right)}$ se obtiene:
+
+$$y'=\frac{2x\left(3x-x^2\right)-\left(3-2x\right)\left(x^2-3\right)}{\left(3x-x^2\right)^2}$$
+
+Simplificar. Puede ser necesario expandir el numerador, pero el denominador puede dejarse sin expandir (forma factorizada).
+
+$$y'=\frac{3x^2-6x+9}{\left(3x-x^2\right)^2}$$
+```
+
+## Interpretación Gráfica de la Primera y Segunda Derivada
+
+### Funciones Crecientes y Decrecientes
+
+- Una función $y=f\left(x\right)$ se dice **creciente** en un intervalo si cuando $x$ aumenta dentro del intervalo $y$ también aumenta. Si $I$ es el intervalo lo anterior se escribe como:
+
+$$x_1 \in I \land x_2 \in I : x_1 < x_2 \Rightarrow f\left(x_1\right) < f\left(x_2\right)$$
+
+- Una función $y=f\left(x\right)$ se dice **decreciente** en un intervalo si cuando $x$ dosminuye dentro del intervalo $y$ también disminuye.
+
+$$x_1 \in I \land x_2 \in I : x_1 > x_2 \Rightarrow f\left(x_1\right) > f\left(x_2\right)$$
+
+La función $y=x^2$ es **decreciente** en el intervalo $(-\infty,0]$ y **creciente** en el intervalo $[0,\infty)$.
+
+Tenemos además que $y'=2x$ y por lo tanto:
+
+- $y'<0$ si $x \in (-\infty,0)$
+- $y'>0$ si $x \in (0,\infty)$.
+
+Se tiene el siguiente resultado:
+
+- Si $f'\left(x\right)>0$ $\forall x \in \left(a,b\right)$ entonces $f$ es creciente en $\left(a,b\right)$.
+- Si $f'\left(x\right)<0$ $\forall x \in \left(a,b\right)$ entonces $f$ es decreciente en $\left(a,b\right)$.
+
+Considerar la función $y=x^3-3x+4$. Veamos su gráfico.
+
+def f(x):
+    return x**3 - 3*x + 4
+
+izquierda = -3
+derecha = 3
+partes = 10
+steps = (derecha - izquierda) * partes
+data = pd.DataFrame([(izquierda + i/partes, f(izquierda + i/partes), f(-1), f(1)) for i in range(steps + 1)],
+                    columns=['x', 'y', 'df/dx=0 (1)', 'df/dx=0 (2)'])
+
+fig = px.line(data, x='x', y=['y', 'df/dx=0 (1)', 'df/dx=0 (2)'],
+              title="f(x)=x^3 - 3x + 4, tangentes a los puntos donde df/dx=0")
+
+
+fig.update_yaxes(
+    scaleanchor = "x",
+    scaleratio = 1/4,
+  )
+fig.show()
+
+Se observa como la función es creciente ($f'>0$) desde $-\infty$ hasta el primer punto donde $f'=0$. Luego es decreciente ($f'<0$) hasta el segundo punto donde $f'=0$. Finalmente, vuelve a ser creciente ($f'>'$) a la derecha del segundo punto donde $f'=0$.
+
+Para calcular esos puntos, hay que calcular la derivada de la función y luego encontrar los puntos en los que la derivada tiene valor 0.
+
+- $f'\left(x\right)=3x^2-3=3\left(x-1\right)\left(x+1\right)$
+- $f'\left(x\right)=0\Rightarrow x=\pm 1$
+
+El ejercicio anterior lleva naturalmente a establecer las siguientes definiciones. Sea $Dom$ el dominio de la función $y=\fx$.
+
+- $A$ es un **mínimo global** de la función $\fx$, si $f\left(A\right)<\fx$ $\forall x \in Dom \land x \neq A$.
+
+
+- $B$ es un **máximo local** de la función $\fx$ si:
+  - $f'\left(B\right)=0$ y
+  - $f'\left(x\right)>0$ para todos los valores $x<B$ suficientemente cerca de $B$ y
+  - $f'\left(x\right)<0$ para todos los valores $x>B$ suficientemente cerca de $B$
+
+
+- $C$ es un **mínimo local** de la función $\fx$ si:
+  - $f'\left(B\right)=0$ y
+  - $f'\left(x\right)<0$ para todos los valores $x<C$ suficientemente cerca de $C$ y
+  - $f'\left(x\right)>0$ para todos los valores $x>C$ suficientemente cerca de $C$
+
+
+- $D$ es un **máximo global** de la función $\fx$, si $f\left(D\right)>\fx$ $\forall x \in Dom \land x \neq D$.
