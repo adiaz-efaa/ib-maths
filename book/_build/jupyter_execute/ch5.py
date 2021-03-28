@@ -64,6 +64,15 @@ fig = px.line(data, x='x', y=['y',],
 fig.update_traces(mode='markers+lines')
 fig.show()
 
+print(f'f(-.1) = {f(-.1):.1f}')
+print(f'f(-.01) = {f(-.01):.1f}')
+print(f'f(-.001) = {f(-.001):.1f}')
+print(f'f(-.0001) = {f(-.0001):.1f}')
+print(f'f(.0001) = {f(.0001):.1f}')
+print(f'f(.001) = {f(.001):.1f}')
+print(f'f(.01) = {f(.01):.1f}')
+print(f'f(.1) = {f(.1):.1f}')
+
 ### Límites al Infinito ($\infty$)
 
 El concepto de límite nos ayuda a entender el comportamiento de las funciones para valores extremos de $x$.
@@ -85,9 +94,9 @@ data = pd.DataFrame([(i * base, f(i * partes + base)) for i in range(1, partes)]
                     columns=['x', 'y'])
 
 fig = px.line(data, x='x', y=['y',],
-              title=f'f(x)=1 / x^2 , lim f(x), x->inf = {f(partes * base):.1f}')
+              title=f'f(x)=1 / x^2 , x > 0, lim f(x), x->+inf = 0, x->0 = +inf')
 
-fig.update_traces(mode='markers+lines')
+fig.update_traces(mode='lines')
 fig.show()
 
 partes = 100
@@ -96,14 +105,14 @@ data = pd.DataFrame([(i * base , f(i * base)) for i in range(-partes, 0)],
                     columns=['x', 'y'])
 
 fig = px.line(data, x='x', y=['y',],
-              title=f'f(x)=1 / x^2 , lim f(x), x->inf = {f(-partes * base):.1f}')
+              title=f'f(x)=1 / x^2 , x < 0, lim f(x), x->-inf = 0, x->0 = +inf')
 
-fig.update_traces(mode='markers+lines')
+fig.update_traces(mode='lines')
 fig.show()
 
 ## La Derivada de una Función
 
-La tasa de cambio promedio de una función $f$ entre los valores $x_1$ y $x_2$ está dada por:
+La tasa de cambio promedio (cambio en la función por unidad de cambio en la variable independiente) de una función $f$ entre los valores $x_1$ y $x_2$ está dada por:
 
 $$\frac{\Delta y}{\Delta x}=\frac{f\left(x_2\right)-f\left(x_1\right)}{x_2-x_1}$$
 
@@ -128,7 +137,7 @@ data = [(x, f(x), (f(1)-f(x))/(1 - x)) for x in [2, 1.5, 1.1, 1.01, 1.001, 1.000
 df = pd.DataFrame(data, columns=['x', 'f(x)', 'gradient'])
 df
 
-```{admonition} ...
+```{admonition} ... continúa ejemplo
 Se observa que cuando $x \to 1$, $\Delta f\left(x\right) \to 2$.
 
 Repitamos ahora el ejercicio para $x=\{.0, .8, .9, .99, .999, .9999\}$:
@@ -138,7 +147,7 @@ data = [(x, f(x), (f(1)-f(x))/(1 - x)) for x in [0, .8, .9, .99, .999, .9999]]
 df = pd.DataFrame(data, columns=['x', 'f(x)', 'gradient'])
 df
 
-```{admonition}  ... fin
+```{admonition}  ... fin ejemplo
 También en este caso, se observa que $\Delta f\left(x\right)\to 2$ cuando $x \to 1$.
 
 Escribamos ahora la expresión del gradiente para $A\left(x,x^2\right)$ y $B\left(x+h,\left(x+h\right)^2\right)$:
@@ -216,7 +225,7 @@ $$\Rightarrow f'\left(x\right)=4x-3-2x^{-3}$$
 https://www.youtube.com/watch?v=MT3tC4BlCEU
 
 ```{admonition} Ejemplo 1
-Consideremos la función $f\left(x\right)=x^2$ su derivada es $f'\left(x\right)=2x$. El valor del gradiente de la recta tangente en $x=0$ es, por lo tanto $0$. La ecuación de esa recta es $y=0$, la ecuación de la recta normal es $x=0$. La pendiente de $y=0$ es $0$, mientras que la pendiente de $x=0$ es $\infty$ (que puede pensarse como $\frac{1}{x}$ para $x\to 0$.
+Consideremos la función $f\left(x\right)=x^2$ su derivada es $f'\left(x\right)=2x$. El valor del gradiente de la recta tangente en $x=0$ es, por lo tanto, $0$. La ecuación de esa recta es $y=0$, la ecuación de la recta perpendicular es $x=0$. La pendiente de $y=0$ es $0$, mientras que la pendiente de $x=0$ es $\infty$ (que puede pensarse como $\frac{1}{x}$ para $x\to 0$.
 ```
 
 def f(x): return x**2
@@ -270,25 +279,23 @@ La función $y=\left(3-x\right)^3$ puede ser escrita como la composición de dos
 
 ```{admonition} Intuición
 :class: tip
-Expandir $y=\left(1+x\right)^2$ y encontrar $\frac{dy}{dx}$.
+Consideremos $y=\left(1+x\right)^2$. Para encontrar encontrar $\frac{dy}{dx}$ primero expandimos $y=\left(1+x\right)^2$ y luego derivamos con la regla del polinomio.
 
 $$y=x^2+2x+1\Rightarrow \frac{dy}{dx}=2\left(x+1\right)$$
 
 Escribir $y=\left(1+x\right)^2$ como composición de 2 funciones $f$ y $g$.
 
-$$g\left(x\right)=x^2$$
-$$f\left(x\right)=1+x$$
+$$g\left(u\right)=u^2$$
+$$u=f\left(x\right)=1+x$$
 
-Sea $u=g\left(x\right)$, encontrar $\frac{du}{dx}$.
+Si escribimos $y=g\left(u\right)$ vemos que:
 
-$$\frac{du}{dx}=2x$$
+$$\frac{dy}{du}=2u$$
 
-Escribir $y$ en términos de la variable $u$ y encontrar $\frac{dy}{du}$.
+Por otra parte $\frac{du}{dx}=1$.
 
-$$y=f\left(u\right)$$
-$$y=1+u\Rightarrow \frac{dy}{du}=1$$
 
-Calcular $\frac{dy}{du}\times \frac{du}{dx}$ y expresar el resultado en términos de $x$.
+Calculamos $\frac{dy}{du}\times \frac{du}{dx}$ y expresamos el resultado en términos de $x$.
 
 $$\frac{dy}{du}\times \frac{du}{dx}=2u\cdot 1$$
 
@@ -359,7 +366,7 @@ $$\frac{dy}{du}=3u^2$$
 
 Y por lo tanto:
 
-$$\frac{dy}{dx}=\frac{dy}{du}\frac{du}{dx}=3u\left(2x-4\right)=3\left(x^2-4x\right)^2\left(2x-4\right)$$
+$$\frac{dy}{dx}=\frac{dy}{du}\frac{du}{dx}=3u^2\left(2x-4\right)=3\left(x^2-4x\right)^2\left(2x-4\right)$$
 
 ### Regla del Producto
 
@@ -449,11 +456,11 @@ $$y'=\frac{3x^2-6x+9}{\left(3x-x^2\right)^2}$$
 
 ### Funciones Crecientes y Decrecientes
 
-- Una función $y=f\left(x\right)$ se dice **creciente** en un intervalo si cuando $x$ aumenta dentro del intervalo $y$ también aumenta. Si $I$ es el intervalo lo anterior se escribe como:
+- Una función $y=f\left(x\right)$ se dice **creciente** en un intervalo si cuando $x$ aumenta dentro del intervalo $y$ también aumenta. Si $I$ es el intervalo, lo anterior se escribe como:
 
 $$x_1 \in I \land x_2 \in I : x_1 < x_2 \Rightarrow f\left(x_1\right) < f\left(x_2\right)$$
 
-- Una función $y=f\left(x\right)$ se dice **decreciente** en un intervalo si cuando $x$ dosminuye dentro del intervalo $y$ también disminuye.
+- Una función $y=f\left(x\right)$ se dice **decreciente** en un intervalo si cuando $x$ disminuye dentro del intervalo $y$ también disminuye.
 
 $$x_1 \in I \land x_2 \in I : x_1 > x_2 \Rightarrow f\left(x_1\right) > f\left(x_2\right)$$
 
@@ -469,7 +476,7 @@ Se tiene el siguiente resultado:
 - Si $f'\left(x\right)>0$ $\forall x \in \left(a,b\right)$ entonces $f$ es creciente en $\left(a,b\right)$.
 - Si $f'\left(x\right)<0$ $\forall x \in \left(a,b\right)$ entonces $f$ es decreciente en $\left(a,b\right)$.
 
-Considerar la función $y=x^3-3x+4$. Veamos su gráfico.
+Considerar la función $y=x^3-3x+4$. Queremos indentificar en qué intervalos la función es creciente y en cuáles es decreciente. Partamos investigando el gráfico.
 
 def f(x):
     return x**3 - 3*x + 4
@@ -491,12 +498,16 @@ fig.update_yaxes(
   )
 fig.show()
 
-Se observa como la función es creciente ($f'>0$) desde $-\infty$ hasta el primer punto donde $f'=0$. Luego es decreciente ($f'<0$) hasta el segundo punto donde $f'=0$. Finalmente, vuelve a ser creciente ($f'>'$) a la derecha del segundo punto donde $f'=0$.
+Se observa como la función es creciente ($f'>0$) desde $-\infty$ hasta el primer punto donde $f'=0$. Luego es decreciente ($f'<0$) hasta el segundo punto donde $f'=0$. Finalmente, vuelve a ser creciente ($f'>0$) a la derecha del segundo punto donde $f'=0$.
 
 Para calcular esos puntos, hay que calcular la derivada de la función y luego encontrar los puntos en los que la derivada tiene valor 0.
 
 - $f'\left(x\right)=3x^2-3=3\left(x-1\right)\left(x+1\right)$
 - $f'\left(x\right)=0\Rightarrow x=\pm 1$
+
+**Conclusión:** para determinar los intervalos donde la función es creciente (decreciente), se calcula su derivada y luego los valores de $x$ en los cuales la derivada es igual a 0. Finalmente, determinamos el signo de la derivada a la derecha y a la izquierda de sus ceros, recordando que $f'\left(x\right)>0$ significa que la función es creciente y $f'\left(x\right)<0$ significa que la función es decreciente.
+
+**Importante:** Una función puede ser creciente (decreciente) a ambos lados de un punto donde su derivada es igual a 0. Esto se llama punto de inflexión y lo veremos un poco más adelante. El ejemplo más sencillo es $y=x^3$ en $x=0$ su derivada, ($3x^2$), es 0 y la función es creciente a ambos lados de $x=0$.
 
 El ejercicio anterior lleva naturalmente a establecer las siguientes definiciones. Sea $Dom$ el dominio de la función $y=\fx$.
 
@@ -516,3 +527,169 @@ El ejercicio anterior lleva naturalmente a establecer las siguientes definicione
 
 
 - $D$ es un **máximo global** de la función $\fx$, si $f\left(D\right)>\fx$ $\forall x \in Dom \land x \neq D$.
+
+### Derivada Segunda
+
+Si $y=f\left(x\right)$ y existe la derivada $f'\left(x\right)$ se puede tratar de calcular la derivada de la derivada, si ésta existe se llama **derivada segunda** de $f$ y se denota con $f''\left(x\right)$. También se usa la notación $f''\left(x\right)=\frac{d^2 f}{dx^2}$.
+
+¿Para qué calcular la derivada segunda de una función?
+
+- Algunas cantidades físicas se modelan naturalmente con la derivada segunda. Por ejemplo, si $x=x\left(t\right)$, la velocidad corresponde a $\frac{dx}{dt}$ y la **aceleración** (cuanto cambia la velocidad en una unidad o instante de tiempo) corresponde a $\frac{d^2x}{dt^2}$.
+- Como veremos en los siguientes ejemplos, los puntos de una función en los cuales $f''\left(x\right)=0$ son los puntos donde la curvatura de la función cambia (de cóncava a convexa o de convexa a cóncava). 
+
+Ejemplo:
+
+- Consideremos $f\left(x\right)=x^2$.
+- La derivada es $2x$ (que tiene un único 0 en $x=0$).
+- La derivada segunda es 2. La función es siempre convexa, su curvatura es hacia arriba.
+
+def f(x): return x**2
+def g(x): return 2*x
+def h(x): return 2
+
+
+data = [(x, f(x), g(x), h(x)) for x in range(-5, 6)]
+df = pd.DataFrame(data, columns=['x', 'y=x^2', 'y=2x', 'y=2'])
+fig = px.line(
+    df,
+    x='x',
+    y=['y=x^2', 'y=2x', 'y=2'],
+    title=f'f(x)= x^2, primera y segunda derivada')
+
+fig.update_traces(mode='markers+lines')
+fig.show()
+
+Ejemplo:
+
+- Por otro lado si $f\left(x\right)=-x^2$ entonces
+- La derivada es $-2x$ (que tiene un único 0 en $x=0$).
+- La derivada segunda es -2. La función es siempre cóncava, su curvatura es hacia abajo.
+
+def f(x): return -x**2
+def g(x): return -2*x
+def h(x): return -2
+
+
+data = [(x, f(x), g(x), h(x)) for x in range(-5, 6)]
+df = pd.DataFrame(data, columns=['x', 'y=-x^2', 'y=-2x', 'y=-2'])
+fig = px.line(
+    df,
+    x='x',
+    y=['y=-x^2', 'y=-2x', 'y=-2'],
+    title=f'f(x)= -x^2, primera y segunda derivada')
+
+fig.update_traces(mode='markers+lines')
+fig.show()
+
+Ejemplo
+
+- Finalmente, consideremos $f\left(x\right)=x^3$ entonces
+- La derivada es $3x^2$ (que tiene un único 0 en $x=0$).
+- La derivada segunda es $6x$ (que también tiene un único 0 en $x=0$). La función es siempre cóncava a la izquierda de 0 y siempre convexa a la derecha de 0.
+
+def f(x): return x**3
+def g(x): return 3*x**2
+def h(x): return 6*x
+
+
+data = [(x, f(x), g(x), h(x)) for x in range(-5, 6)]
+df = pd.DataFrame(data, columns=['x', 'y=x^3', 'y=3x^2', 'y=6x'])
+fig = px.line(
+    df,
+    x='x',
+    y=['y=x^3', 'y=3x^2', 'y=6x'],
+    title=f'f(x)= x^3, primera y segunda derivada')
+
+fig.update_traces(mode='markers+lines')
+fig.show()
+
+**Test de la Segunda Derivada para Máximos y Mínimos**
+
+- Si $f'\left(c\right)=0$ y $f''\left(c\right)<0$ entonces $f\left(x\right)$ tiene un máximo local en $x=0$.
+- Si $f'\left(c\right)=0$ y $f''\left(c\right)>0$ entonces $f\left(x\right)$ tiene un mínimo local en $x=0$.
+- Si $f'\left(c\right)=0$ y $f''\left(c\right)=0$ entonces no se puede concluir si $c$ es máximo o mínimo local. En este caso hay que revisar el signo de la derivada primera a ambos lados de $c$.
+
+**Definiciones**
+
+- $f$ es cóncava (*concave down*) en un intervalo $\left(a,b\right)$ si $f\left(x\right)<0$, $\forall x \in \left(a,b\right)$.
+- $f$ es convexa (*concave up*) en un intervalo $\left(a,b\right)$ si $f\left(x\right)>0$, $\forall x \in \left(a,b\right)$.
+- Un punto de **inflexión** de $f\left(x\right)$ corresponde a un cambio en la curvatura del gráfico de $f$ (de cóncavo a convexo o viceversa).
+  - Se puede demostrar que si $f$ tiene un punto de inflexión en $x=c$ entonces $f''\left(c\right)=0$.
+- Si $f$ tiene un punto de inflexión en $x=c$ y $f'\left(c\right)=0$, el punto $c$ se dice **punto de inflexión horizontal**, porque la recta tangente a $f$ en $x=c$ es paralela al eje $x$.
+
+## Aplicaciones: Optimización y Cinemática
+
+Consideremos un tarro de bedida. El volumen usual de estos tarros es 330 ml. Dado que las compañías que producen los tarros quieren usar la menor cantidad de material posible, vamos a calcular que altura y diámetro deben tener para minimizar su superfice total y por lo tanto la cantidad de material utilizado en su fabricación.
+
+- La superficie del cilindro está dada por $S=2\pi rh + 2\pi r^2$. El primer término corresponde a la parte curva y el segundo a la suma de las partes de arriba y abajo.
+- Por otro lado, el volumen del cilindro es $V=\pi r^2 h$.
+- Queremos que $V=330 ml$, por lo tanto $\pi r^2 h=330$ y a su vez, queremos que la superficie total sea la mínima.
+- Tenemos que $h=\frac{330}{\pi r^2}$ y por lo tanto, $S\left(r\right)=2\pi r \frac{330}{\pi r^2}+ 2\pi r^2=\frac{660}{r}+ 2\pi r^2$.
+- $S'\left(r\right)=-\frac{660}{r^2}+4\pi r$
+
+def s(r): return 660.0 / r + 2.0 * math.pi * r**2
+
+
+data = [(r, s(r)) for r in [1, 1.5, 2, 2.5, 3, 3.5, 3.6, 3.7, 3.8, 3.9, 4]]
+df = pd.DataFrame(data, columns=['r', 'S(r)'])
+fig = px.line(
+    df,
+    x='r',
+    y=['S(r)'],
+    title=f'Superficie del cilindro en función de r')
+
+fig.update_traces(mode='markers+lines')
+fig.show()
+
+El gráfico nos muestra que el mínimo está entre 3.6 y 3.8. Vamos a calcular de forma precisa ese punto resolviendo la ecuación $S'\left(r\right)=0$.
+
+$$-\frac{660}{r^2}+4\pi r=0$$
+$$-660 + 4\pi r^3=0$$
+$$r^3= \frac{600}{4\pi}$$
+$$r=\left(\frac{600}{4\pi}\right)^{\frac{1}{3}}$$
+
+r_opt = (660.0 / (4.0 * math.pi))**(1./3.)
+print(f'El valor de r debe ser: {r_opt:.8f}')
+
+Veamos ahora un ejemplo de cinemática. Supongamos que Ben corre en línea recta desde el punto A al punto B. Cuando alcanza el punto B, se da la vuelta y corre de regreso al punto B. Cuando llega de vuelta a A, se gira nuevamente y regresa al punto B.
+
+La posición $s$ de Ben, medida desde el punto A en cualquier instante de tiempo $t$ (donde $t \in\left[0,4\right]$ está dada por:
+
+$$s\left(t\right)=t^3-6t^2+9t$$
+
+El gráfico del desplazamiento en función del tiempo es el siguiente:
+
+def s(t): return t**3 - 6*t**2 + 9*t
+
+
+data = [(t * .25, s(t * .25)) for t in range(17)]
+df = pd.DataFrame(data, columns=['t', 'S(t)'])
+fig = px.line(
+    df,
+    x='t',
+    y=['S(t)'],
+    title=f'Desplazamiento de Ben en función de t')
+
+fig.update_traces(mode='markers+lines')
+fig.show()
+
+La velocidad de Ben está dada por $s'\left(t\right)=3t^2-12t+9$. El gráfico de la velocidad es:
+
+def sp(t): return 3*t**2 - 12*t + 9
+
+
+data = [(t * .25, sp(t * .25)) for t in range(17)]
+df = pd.DataFrame(data, columns=['t', "S'(t)"])
+fig = px.line(
+    df,
+    x='t',
+    y=["S'(t)"],
+    title=f'Velocidad de Ben en función de t')
+
+fig.update_traces(mode='markers+lines')
+fig.show()
+
+- Para $t\left[0,1\right]$ Ben está yendo hacia B.
+- Para $t\in\left(1,3\right)$ Ben está volviendo hacia A, por eso la velocidad tiene signo negativo.
+- Finalmente, para $t\in\left[3,4\right]$ Ben está yendo nuevamente hacia B, por eso la velocidad vuelve a ser positiva.
+- Los momentos en los que la velocidad de Ben es $=0$ son los instantes en los que Ben se devuelve, primero de B a A y luego de A a B.
