@@ -86,3 +86,77 @@ df_sim = pd.DataFrame([(0,1), (1,2), (2,3), (3,4), (4,5), (5,6), (6,5), (7,4), (
 fig = px.bar(df_sim, x='intervalo', y=['frecuencia',],
               title=f'Sin Sesgo')
 fig.show()
+
+## Medidas de Tendencia Central
+
+Hasta ahora hemos visto como recopilar y presentar datos. El próximo paso es elegir un único valor que pueda representar la data de forma general. Una medida de tendencia central que nos indica donde está "la mitad" de los datos recopilados. Las medidas más comunes de tendencia central son:
+
+- moda
+- media
+- mediana
+
+### Moda
+
+**Definición:** la moda es el valor que ocurre con más frecuencia en los datos.
+
+**Tips:**
+
+- Puede haber más de una *moda* si dos o más valores son los que ocurren con mayor frecuencia. 
+- Si no hay ningún valor de la muestra que ocurra con mayor frecuencia (todos ocurren sólo una vez) entonces la muestra no tiene *moda*.
+
+**Ejemplo:**
+
+data = [4, 7, 3, 3, 1, 2, 7, 5, 7, 11]
+
+contador =  {elem: data.count(elem) for elem in set(data)}
+highest_counter = [(k, v) for k, v in contador.items() if v == max(contador.values())]
+print(f'La moda es: {highest_counter[0][0]}')
+
+Cuando los datos se presentan en una tabla de frecuencias, la moda es el grupo que tiene la más alta frecuencia. En el gráfico de barras, es el grupo con la barra más alta.
+
+df_frecuencia = pd.DataFrame.from_dict(contador, orient='index')
+df_frecuencia.columns = ['frecuencia']
+
+df_frecuencia
+
+fig = px.bar(df_frecuencia, x=df_frecuencia.index, y=['frecuencia',],
+              title=f'Gráfico de Barras Notas')
+fig.show()
+
+#### La Clase Modal
+
+Cuando se busca la modal de datos que han sido agrupados, se debe determinar el **grupo** que tiene la mayor frecuencia. A este grupo se le llama la **clase modal**.
+
+Si revisar toda la data, no se puede determinar cula valor dentro de la clase modal es el que tiene la mayor frecuencia.
+
+### Media
+
+La media aritmética, también llamada promedio, es la medida más común de tendencia central. La media es simplemente la suma de todos los valores, dividida por el número total de datos. Usualmente se denota con $\mu$ o $\overline x$. De forma más matemática:
+
+$$\overline x = \frac{\sum_{i=1}^N x_i}{N}$$
+
+Al contrario de la moda, la media, usualmente, es un número que no pertenece a los datos. Por ejemplo, si tus notas son 6, 6, 7 y 7 la media será 6.5 que no coincide con ninguna de las notas obtenidas.
+
+¿Cómo se obtiene la media de los datos a partir de la tabla de frecuencias?
+
+**Respuesta:** en el caso anterior la media se obtiene con la siguiente fórmula.
+
+$$\overline x =\frac{\sum_{i=1}^N f_i\cdot x_i}{\sum_{i=1}^N f_i}$$
+
+donde $f_i$ es la frecuencia de la observación $x_i$.
+
+### Mediana
+
+La mediana es el dato que está justo en el medio cuando los datos se ordenan de forma ascendente. Si el número de datos es par, entonces la mediana es la media de los dos datos que están en el medio.
+
+**Ejemplo:**
+
+Encontrar la mediana de 7, 12, 1, 4, 17, 9, 11, 16, 10, 18.
+
+datos = [7, 12, 1, 4, 2, 17, 9, 11, 16, 10, 18]
+datos.sort()
+print(f'Los datos ordenados son: {datos}')
+
+Son 11 elementos, el número del medio es entonces el número 6. Por lo tanto la mediana es:
+
+print(f'mediana: {datos[6]}')
