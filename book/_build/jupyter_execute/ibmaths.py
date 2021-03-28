@@ -7,4 +7,5 @@
 :caption: Diferenciación
 
 ch5
+ch6
 ```
