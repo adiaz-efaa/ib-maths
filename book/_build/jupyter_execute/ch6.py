@@ -32,6 +32,8 @@ import plotly.express as px
 
 Para datos discretos, la herramienta más usual de presentación son la tabla y gráfico de frecuencias.
 
+**Ejemplo:**
+
 Consideremos las notas de 32 alumnos en un test en el cual se puede obtener una nota entera del 0 al 10. Supongamos que los resultados son los siguientes:
 
 resultados = [0, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 9, 10]
@@ -116,7 +118,6 @@ Cuando los datos se presentan en una tabla de frecuencias, la moda es el grupo q
 
 df_frecuencia = pd.DataFrame.from_dict(contador, orient='index')
 df_frecuencia.columns = ['frecuencia']
-
 df_frecuencia
 
 fig = px.bar(df_frecuencia, x=df_frecuencia.index, y=['frecuencia',],
@@ -149,6 +150,8 @@ donde $f_i$ es la frecuencia de la observación $x_i$.
 
 La mediana es el dato que está justo en el medio cuando los datos se ordenan de forma ascendente. Si el número de datos es par, entonces la mediana es la media de los dos datos que están en el medio.
 
+Esto implica que 50% de los datos están a la izquierda de la mediana y 50% de los datos están a la derecha de la mediana.
+
 **Ejemplo:**
 
 Encontrar la mediana de 7, 12, 1, 4, 17, 9, 11, 16, 10, 18.
@@ -160,3 +163,84 @@ print(f'Los datos ordenados son: {datos}')
 Son 11 elementos, el número del medio es entonces el número 6. Por lo tanto la mediana es:
 
 print(f'mediana: {datos[6]}')
+
+### Resumen
+
+````{panels}
+:column: col-4
+:card: border-2
+Moda
+^^^
+La **moda** cual es el valor que con más frecuencia ocurre en la muestra.
+
+**Ventajas**
+
+- Los valores extremos no afectan la moda.
+
+**Desventajas**
+
+- No utiliza todos los elementos del conjunto de datos.
+- No es necesariamente única. Puede haber más de una **moda**. En estos casos su interpretación se hace difícil.
+- La **moda** no está definida cuando ningún valor se repite.
+---
+Media
+^^^
+La media es la suma de todos los datos dividida por el número total de datos.
+
+**Ventajas**
+
+- Es la medida más popular y más utilizada.
+- Utiliza todos los datos de la muestra.
+- Es única y está siempre bien definida.
+- Útil para comparar distintas muestras.
+- Muy utilizada en cálculos posteriores.
+
+**Desventajas**
+
+- Se ve afectada por los valores extremos de la muestra.
+---
+Mediana
+^^^
+Ordenados los datos de la muestra de menor a mayor, la mediana es el dato que está justo al medio de la muestra.
+
+**Ventajas**
+
+- Los valores extremos no la afectan tanto como a la media.
+- Útil para comparar distintas muestras.
+- Es única y está siempre bien definida.
+
+**Desventajas**
+
+- No considera todos los datos de la muestra.
+- Se utiliza poco en cálculos posteriores.
+````
+
+## Medidas de Dispersión
+
+**Definición:** el **rango** es la diferencia entre el máximo y el mínimo valor de una muestra.
+
+$$Rango=\max\left(x_1,x_2,\ldots ,x_N\right)-\min\left(x_1,x_2,\ldots ,x_N\right)$$
+
+donde $x_1,x_2,\ldots ,x_N$ son los datos de la muestra.
+
+En el ejemplo de las notas de 32 alumnos en un examen con puntajes del 1 al 10 los resultados eran:
+
+print(f'Resultados: {resultados}')
+
+En este caso tenemos que:
+
+min_res = min(resultados)
+print(f'La nota mínima es: {min_res}')
+max_res = max(resultados)
+print(f'La nota máxima es: {max_res}')
+rango = max_res - min_res
+print(f'Por lo tanto el rango es: {max_res} - {min_res} = {rango} ')
+
+**Definición:** Cuartiles, son los valores que dividen la data en cuartos.
+
+- El primer cuartil (llamado cuartil inferior o $Q_1$) es tal que 25% de los datos son inferiores a $Q_1$.
+- El segundo cuartil es la mediana, 50% de los datos son inferiores a ella.
+- El tercer cuartil (llamado cuartil superior o $Q_3$) es tal que 75% de los datos son inferiores a $Q_3$.
+- El último cuartil es el máximo valor de la muestra.
+
+**Observación:** $Q_1$ es la mediana del 50% inferior de la muestra y $Q_3$ es la mediana del 50% superior de la muestra.
