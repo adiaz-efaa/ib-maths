@@ -217,7 +217,9 @@ Ordenados los datos de la muestra de menor a mayor, la mediana es el dato que es
 
 ## Medidas de Dispersión
 
-**Definición:** el **rango** es la diferencia entre el máximo y el mínimo valor de una muestra.
+### Rango
+
+El **rango** es la diferencia entre el máximo y el mínimo valor de una muestra.
 
 $$Rango=\max\left(x_1,x_2,\ldots ,x_N\right)-\min\left(x_1,x_2,\ldots ,x_N\right)$$
 
@@ -236,7 +238,9 @@ print(f'La nota máxima es: {max_res}')
 rango = max_res - min_res
 print(f'Por lo tanto el rango es: {max_res} - {min_res} = {rango} ')
 
-**Definición:** Cuartiles, son los valores que dividen la data en cuartos.
+### Cuartiles
+
+Los **cuartiles**, son los valores que dividen la data en cuartos.
 
 - El primer cuartil (llamado cuartil inferior o $Q_1$) es tal que 25% de los datos son inferiores a $Q_1$.
 - El segundo cuartil es la mediana, 50% de los datos son inferiores a ella.
@@ -244,3 +248,56 @@ print(f'Por lo tanto el rango es: {max_res} - {min_res} = {rango} ')
 - El último cuartil es el máximo valor de la muestra.
 
 **Observación:** $Q_1$ es la mediana del 50% inferior de la muestra y $Q_3$ es la mediana del 50% superior de la muestra.
+
+### Box Plots
+
+Es posible obtener una idea de la distribución de una muestra de datos examinando el siguiente resumen de 5 números:
+
+- El valor mínimo
+- El primer cuartil
+- La mediana (segundo cuartil)
+- El tercer cuartil
+- El valor máximo
+
+Estos 5 números pueden ser representados gráficamente a través de un diagrama de *Caja y Bigotes* (box-and-whisker diagram).
+
+Veamos un ejemplo con datos generados de forma aleatoria.
+
+import plotly.graph_objects as go
+import numpy as np
+
+x0 = np.array([-0.01266288, -0.39623657, -2.27460173,  0.26492423, -0.37191596,
+       -0.0469952 , -1.12485845,  0.26766143, -1.74320972,  0.58269502,
+        0.56357888, -2.16268586,  0.65205293,  0.06388311,  0.86067789,
+       -1.19481468, -0.45478148, -0.86976107, -1.9288584 ,  1.28710555,
+        0.17671311, -1.19529302,  0.69459011,  0.51450959,  1.81595071,
+        0.8890141 , -1.31808439, -1.57484991,  0.2511651 ,  0.64026872,
+       -1.04312134,  0.59108169,  0.75979648, -1.44733236,  1.65422606,
+       -0.2734052 ,  1.75192239,  1.03558314,  1.01046211,  0.73390352,
+       -0.82820519, -1.53824126,  0.58670701, -1.33037958,  1.34250693,
+        0.71374556, -0.80025983, -0.75024957, -1.75550578, -1.62384854])
+
+fig = go.Figure()
+fig.add_trace(go.Box(x=x0))
+
+fig.show()
+
+La diferencia $Q_3-Q_1$ suele llamarse *rango intercuantil* y se denota con $IQR$.
+
+### Outliers
+
+Los datos extremos de una muestra se llaman **outliers** (en español también se usa la palabra en inglés, no existe una traducción ampliamente aceptada).
+
+```{admonition} Criterio para Identificar un Outlier
+Se considera outlier cualquier valor que esté $1.5 \cdot IQR$ veces por debajo de $Q_1$ o por encima de $Q_3$.
+```
+
+#### Cuando Rechazar o Mantener un Outlier
+
+Hemos visto un criterio para identificar un outlier. Ahora se debe decidir si se acepta o se rechaza ese outlier (en la práctica esto significa eliminar o mantener el dato en la muestra).
+
+Los outliers pueden tener un efecto importante en medidas estadísticas como la media, pero algunos de ellos son datos válidos y no es aceptable rechazarlos sin una razón bien fundamentada.
+
+Por el contrario, cuando un outlier se produce por un error de medición, éste debe ser eliminado. Por ejemplo, si estamos estudiando la altura de una población, un dato de 3.0 metros es seguramente un error de medición.
+
+Por otra parte, supongamos que los resultados de una prueba de 7 estudiantes son los siguientes: 20%, 22%, 18%, 30%, 26%, 89% y 21%. Si se concluye que el 89% está bien registrado, entonces eliminarlo conduciría a concluir que la prueba era demasiado difícil para los alumnos. Sin embargo, considerando que no hay error de medición, al mantenerlo se podría concluir que el nivel de dificultad de la prueba era el adecuado y que 6 de los 7 alumnos no se prepararon lo suficiente.
