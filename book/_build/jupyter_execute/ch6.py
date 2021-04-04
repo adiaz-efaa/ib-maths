@@ -375,7 +375,12 @@ df_notas_frec_acum.head(12)
 
 Podemos observar que hay 5 alumnos (un 1.0%) con puntaje igual o menor a 2 y 7 (1.4%) alumnos con un puntaje igual a 3. Esto nos indica que el percentil 1% de esta muestra está "entremedio" de estos dos valores y que el percentil 1% no es un puntaje posible de obtener (así como la media, muchas veces, no corresponde a ningún resultado de la medición).
 
-En estas situaciones, existen varias maneras de calcular un percentil y es importante tener claro, según el contexto, cuál se está utilizando y cómo se calcula. Por ejemplo en este caso:
+```{admonition} Cálculo de Percentil
+:class: tip
+En estas situaciones, existen varias maneras de calcular un percentil y es importante tener claro, según el contexto, cuál se está utilizando y cómo se calcula.
+```
+
+Por ejemplo en este caso:
 
 percentil = 1
 
@@ -397,7 +402,7 @@ print(np.percentile.__doc__)
 
 ### Varianza y Desviación Estándar
 
-El rango y los cuartiles son buenas medidas de cuan dispersa está una muestra de datos respecto a su mediana, pero no utilizan toda la data disponible. Por otro lado, la **varianza** es una métrica de dispersión que utiliza todos los datos de la muestra. Es una métrica que refleja qué tan lejanos está, en promedio, cada uno de los datos de la media.
+El rango y los cuartiles son buenas medidas de cuan dispersa está una muestra de datos respecto a su mediana, pero no utilizan toda la data disponible. Por otro lado, la **varianza** es una métrica de dispersión que utiliza todos los datos de la muestra. Es una métrica que refleja qué tan lejanos están, en promedio, cada uno de los datos de la media.
 
 Para ejemplificar, volvamos a considerar el ejemplo de los resultados de 32 alumnos en una prueba con puntajes entre 0 y 10. Los datos eran los siguientes:
 
