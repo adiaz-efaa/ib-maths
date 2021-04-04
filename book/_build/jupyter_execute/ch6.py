@@ -5,6 +5,8 @@ Datos univariados (o data univariada) son datos que se describen con una sola va
 El análisis de datos univariados no considera relaciones entre distintas variables, como podría ser la relación entre la altura y el peso de los compañeros de clase.
 
 import math
+import random
+import numpy as np
 import pandas as pd
 import plotly.express as px
 
@@ -301,3 +303,148 @@ Los outliers pueden tener un efecto importante en medidas estadísticas como la 
 Por el contrario, cuando un outlier se produce por un error de medición, éste debe ser eliminado. Por ejemplo, si estamos estudiando la altura de una población, un dato de 3.0 metros es seguramente un error de medición.
 
 Por otra parte, supongamos que los resultados de una prueba de 7 estudiantes son los siguientes: 20%, 22%, 18%, 30%, 26%, 89% y 21%. Si se concluye que el 89% está bien registrado, entonces eliminarlo conduciría a concluir que la prueba era demasiado difícil para los alumnos. Sin embargo, considerando que no hay error de medición, al mantenerlo se podría concluir que el nivel de dificultad de la prueba era el adecuado y que 6 de los 7 alumnos no se prepararon lo suficiente.
+
+### Frecuencia Acumulada
+
+Los siguientes datos muestran el número de veces que 50 estudiantes perdieron un lápiz durante la semana:
+
+lapices = [5, 9, 10, 5, 9, 9, 8, 4, 9, 8, 5, 7, 3, 10, 7, 7, 8, 7, 6, 6, 9, 6, 4,
+           4, 10, 5, 6, 6, 3, 8, 7, 8,3, 4, 6, 6, 5, 7, 5, 4, 3, 5, 2, 4, 2, 8, 1,0, 3, 5]
+
+Vamos a construir una tabla de frecuencia acumulada, es decir, en cada fila vamos a anotar el número de lápices perdidos y el número de alumnos que ha perdido ese número de lápices o menos:
+
+frec_acum = [(i, sum([lapices.count(j) for j in range(i+1)])) for i in range(11)]
+df_frec_acum = pd.DataFrame(
+    frec_acum,
+    columns=['num_lapices', 'Número de alumnos que perdió num_lapices o menos lápices'])
+df_frec_acum
+
+Vamos a dibujar el gráfico de la fecuencia acumulada:
+
+fig = px.line(
+    df_frec_acum,
+    x='num_lapices',
+    y=['Número de alumnos que perdió num_lapices o menos lápices',],
+    title=f'Gráfico de la Frecuencia Acumulada')
+
+fig.update_traces(mode='markers+lines')
+fig.show()
+
+- El menor valor en el eje $y$ del gráfico es 1 y el mayor valor es 50, que coincide con el número de alumnos.
+- Dado que para cada nuevo valor de la variable `num_lapices`, agregamos más alumnos, el gráfico nunca puede ser decreciente.
+
+Cuando se dispone de toda la data (*raw data*) se puede utilizar la fórmula:
+
+$$mediana=\left(\frac{n+resto\left(n,2\right)}{2}\right)esimo\space valor$$
+
+para calcular la mediana y los cuartiles cuando la data se ordena de forma ascendente. Aquí, $resto\left(n,2\right)$ es el resto de la división entera de $n$ por 2, por lo tanto será 0 si $n$ es par y 1 si $n$ es impar. Para muestras con muchos datos, esta distinción se hace muy poco significativa.
+
+Sin embargo, cuando se dispone de data agrupada, puede ser difícil determinar la mediana o un cuartil cuando ese valor está en el medio de uno de los grupos.
+
+Las curvas de frecuencia acumulada permiten estimar la mediana y los cuartiles a partir de data acumulada. Por ejemplo, para encontrar la mediana, se dibuja una línea horizontal que cruza el eje $y$ en el $\frac{n}{2} esimo$ valor y desde la intersección de esa línea con el gráfico de frecuencia acumulada, se traza una línea vertical hacia abajo. El punto donde esta línea intersecta el eje $x$, corresponde a la mediana.
+
+Por ejemplo, en el caso anterior:
+
+fig = px.line(
+    df_frec_acum,
+    x='num_lapices',
+    y=['Número de alumnos que perdió num_lapices o menos lápices'],
+    title=f'Gráfico de la Frecuencia Acumulada con Cálculo de Mediana')
+fig.update_traces(mode='lines')
+fig.add_hline(y=25, annotation_text=' y=25', line_color='green')
+fig.add_vline(x=5.3, annotation_text=' x=5.3 => mediana=5.3\n', line_color='red')
+fig.show()
+
+### Percentiles
+
+Un *percentil* es un número tal que un porcentaje de los datos están por debajo de del percentil. Por ejemplo, si el percentil 10% es $P_{10}$ esto significa que un 10% de los datos de la muestra están por debajo de $P_{10}$. 
+
+Veamos un ejemplo con una muestra de 500 datos con números aleatorios entre 1 y 100 (que podrían representar los puntajes en una prueba tomada por 500 alumnos).
+
+np.random.seed(123456)
+notas = np.random.lognormal(0, 1, 500) * 40
+notas = [int(min(nota, 100)) for nota in notas]
+notas_frec_acum = [(i, sum([notas.count(j) for j in range(i+1)])) for i in range(101)]
+df_notas_frec_acum = pd.DataFrame(
+    notas_frec_acum,
+    columns=['nota', 'Número de alumnos con nota igual o inferior'])
+
+Veamos las primeras 12 filas de la tabla con las frecuencias acumuladas:
+
+df_notas_frec_acum.head(12)
+
+Podemos observar que hay 5 alumnos (un 1.0%) con puntaje igual o menor a 2 y 7 (1.4%) alumnos con un puntaje igual a 3. Esto nos indica que el percentil 1% de esta muestra está "entremedio" de estos dos valores y que el percentil 1% no es un puntaje posible de obtener (así como la media, muchas veces, no corresponde a ningún resultado de la medición).
+
+En estas situaciones, existen varias maneras de calcular un percentil y es importante tener claro, según el contexto, cuál se está utilizando y cómo se calcula. Por ejemplo en este caso:
+
+percentil = 1
+
+metodo = 'lower'
+print(f'Percentil {percentil/100:.1%}, método={metodo}: {np.percentile(notas, percentil, interpolation=metodo):.4f}')
+
+metodo = 'higher'
+print(f'Percentil {percentil/100:.1%}, método={metodo}: {np.percentile(notas, percentil, interpolation=metodo):.4f}')
+
+metodo = 'midpoint'
+print(f'Percentil {percentil/100:.1%}, método={metodo}: {np.percentile(notas, percentil, interpolation=metodo):.4f}')
+
+metodo = 'linear'
+print(f'Percentil {percentil/100:.1%}, método={metodo}: {np.percentile(notas, percentil, interpolation=metodo):.4f}')
+
+En este ejemplo estamos usando la función `percentile` de `numpy`, que tiene la siguiente documentación. Lo referido al parámetro `interpolation` explica el funcionamiento de los distintos métodos.
+
+print(np.percentile.__doc__)
+
+### Varianza y Desviación Estándar
+
+El rango y los cuartiles son buenas medidas de cuan dispersa está una muestra de datos respecto a su mediana, pero no utilizan toda la data disponible. Por otro lado, la **varianza** es una métrica de dispersión que utiliza todos los datos de la muestra. Es una métrica que refleja qué tan lejanos está, en promedio, cada uno de los datos de la media.
+
+Para ejemplificar, volvamos a considerar el ejemplo de los resultados de 32 alumnos en una prueba con puntajes entre 0 y 10. Los datos eran los siguientes:
+
+print(f'Notas de 32 alumnos: {resultados}')
+
+Tabulemos esta data y vamos calculando paso a paso la varianza:
+
+df_resultados = pd.DataFrame(resultados, columns=['nota',])
+df_resultados
+
+Se calcula la media:
+
+media = np.mean(df_resultados['nota'])
+print(f'La media es: {media:.2f}')
+
+Se calcula la distancia de cada nota a la media:
+
+df_resultados['(nota - media)'] = df_resultados['nota'] - media
+df_resultados
+
+Se calcula ahora el cuadrado de la distancia:
+
+df_resultados['(nota - media)^2'] = df_resultados['(nota - media)'] ** 2
+df_resultados
+
+Elevar al cuadrado la distancia logra dos objetivos:
+
+- evitar que las distancias negativas se compensen con las positivas dando así un falsa idea de la dispersión.
+- ponderar más en el promedio final las distancias mayores.
+
+Finalmente, la varianza, que usualmente se denota con $\sigma^2$ está dada por:
+
+$$\sigma^2=\frac{1}{n}\sum_{i=1}^n{\left(x_i-\mu\right)^2}$$
+
+Aquí, $\mu$ es la media de los datos.
+
+En el ejemplo, la variaza resulta ser:
+
+print(f"Varianza es: {np.mean(df_resultados['(nota - media)^2']):.2f}")
+
+Dado que la unidad en la que se mide la **varianza** no coincide con la unidad de los datos, también se define la desviación estándar, que se denota con $\sigma$, como:
+
+$$\sigma=\sqrt{\frac{1}{n}\sum_{i=1}^n{\left(x_i-\mu\right)^2}}=\sqrt{\sigma^2}$$
+
+#### Propiedades de la Desviación Estándar
+
+- La **desviación estándar** sólo se utiliza para medir dispersión alrededor de la media.
+- La **varianza** y la **desviación estándar** son siempre positivas.
+- La **desviación estándar** es sensible a los *outliers*. Un sólo *outlier* puede cambiar significativamente su valor.
+- Para muestras de datos con una **media** similar, mientras más dispersión en los datos mayor es la **desviación estándar**.

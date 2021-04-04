@@ -268,6 +268,7 @@ fig.show()
 
 ```{admonition} Resultado
 Si la recta tangente a un punto de la curva tiene pendiente $m$, entonces la recta perpendicular tiene pendiente igual a  $\frac{-1}{m}$.
+```
 
 ## Más Reglas para Calcular Derivadas
 
@@ -436,7 +437,7 @@ Si $f\left(x\right)=\frac{u\left(x\right)}{v\left(x\right)}$, $v\left(x\right)\n
 $$f'\left(x\right)=\frac{u'\left(x\right)v\left(x\right)-v'\left(x\right)u\left(x\right)}{v\left(x\right)^2}$$
 ```
 
-```{adminition} Ejemplo
+```{admonition} Ejemplo
 $$y=\frac{x^2-3}{3x-x^2}$$
 
 $$u\left(x\right)=x^2-3 \Rightarrow u'\left(x\right)=2x$$
