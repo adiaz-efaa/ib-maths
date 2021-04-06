@@ -6,7 +6,7 @@
 :titlesonly:
 :caption: Diferenciación
 
-ch5
+ch05
 ```
 
 
@@ -15,5 +15,14 @@ ch5
 :titlesonly:
 :caption: Probabilidad y Estadística
 
-ch6
+ch06
+```
+
+
+```{toctree}
+:hidden:
+:titlesonly:
+:caption: Integración
+
+ch10
 ```

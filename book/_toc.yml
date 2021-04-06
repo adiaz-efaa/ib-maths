@@ -2,8 +2,10 @@
   
 - part: Diferenciación
   chapters:
-  - file: ch5
+  - file: ch05
 - part: Probabilidad y Estadística
   chapters:
-  - file: ch6
-  
+  - file: ch06
+- part: Integración
+  chapters:
+  - file: ch10
